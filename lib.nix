@@ -50,15 +50,7 @@ let
     builtins.map (drvAttr: pythonPackages.${drvAttr} or (throw "unsupported build system requirement ${drvAttr}")) requiredPkgs;
 
   # Find gitignore files recursively in parent directory stopping with .git
-  findGitIgnores = path:
-    let
-      parent = builtins.dirOf path;
-      gitIgnore = path + "/.gitignore";
-      isGitRoot = builtins.pathExists (path + "/.git");
-      hasGitIgnore = builtins.pathExists gitIgnore;
-      gitIgnores = if hasGitIgnore then [ gitIgnore ] else [ ];
-    in
-    lib.optionals (builtins.pathExists path && builtins.toString path != "/" && ! isGitRoot) (findGitIgnores parent) ++ gitIgnores;
+  findGitIgnores = path: [];
 
   /*
     Provides a source filtering mechanism that:
